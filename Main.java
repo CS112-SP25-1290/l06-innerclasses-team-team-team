@@ -34,10 +34,10 @@ public class Main
 	public static void main(String[] args)
 	{
 		// DECLARATION + INITIALIZATION
-		Person p1 = new Person("Amira", "I am a Syrian refugee.", 40);
-		Person p2 = new Person("D'Andra", "I am an African-American trans woman.", -20);
-		Person p3 = new Person("Jennifer", "I am a New Yorker", 140);
-		Person p4 = new Person("Pete", "I am a guy from Pennsylvania", 200);
+		Person p1 = new Person("Amira", "she/her", "I am a Syrian refugee.", 40);
+		Person p2 = new Person("D'Andra", "she/her", "I am an African-American trans woman.", -20);
+		Person p3 = new Person("Jennifer", "she/her", "I am a New Yorker", 140);
+		Person p4 = new Person("Pete", "he/him", "I am a guy from Pennsylvania", 200);
 		Person self = new Person();
 		Person[] people = {p1, p2, p3, p4, self};
 		boolean done = false;
@@ -74,7 +74,10 @@ public class Main
 					break;
 				case 3:
 					/***** TODO: (Part 1) implement a comparison case using the comparable method on the Person class to compare self to p1-p4*****/
-					
+					comparePrivilegeTo(self, people[0]);
+					comparePrivilegeTo(self, people[1]);
+					comparePrivilegeTo(self, people[2]);
+					comparePrivilegeTo(self, people[3]);
 					System.out.println("\nReturning to main menu.\n");
 					break;
 				case 4:
@@ -83,8 +86,7 @@ public class Main
 					done = true;
 					break;
 				default:
-					System.out.println("Invalid input, please enter a valid choice."
-							+ "\nReturning to main menu...\n");
+					System.out.println("Invalid input, please enter a valid choice. \nReturning to main menu...\n");
 					break;				
 			}
 		}while(!done);
@@ -107,27 +109,25 @@ public class Main
 		story = keyboard.nextLine();
 		
 		person.setName(name);
-		person.setStory(story);
+		person.setBackground(story);
 	}
 
 	public static int doPrivilegeQuestionnaire() {
 		boolean isValid;
 		int choice, privilegeEstimate = Person.DEFAULT_PRIVILEGE;
-	
+
 		System.out.println("Please indicate whether the following statements are true or false.\n"
 				+ "Input 1 or 2 accordingly.");
-		
-		for(int i = 0; i < STATEMENTS.length; i++) 
-		{
+
+		for (int i = 0; i < STATEMENTS.length; i++) {
 			isValid = false;
-			do{
+			do {
 				System.out.println(STATEMENTS[i]);
 				System.out.print("1. True. \n2. False.\nEnter the appropriate answer: ");
 				choice = keyboard.nextInt();
 				System.out.println();
 
-				switch (choice)
-				{
+				switch (choice) {
 					case 1:
 						privilegeEstimate += 10;
 						isValid = true;
@@ -138,11 +138,29 @@ public class Main
 						break;
 					default:
 						System.out.println("Invalid choice, please make sure to enter 1 or 2.");
-						break;			
+						break;
 				}
-			}while(!isValid);
+			} while (!isValid);
 		}
-		
+
 		return privilegeEstimate;
+	}
+	
+	public static void comparePrivilegeTo(Person self, Person other)
+	{
+		int diff = self.compareTo(other);
+		String otherName = other.getName();
+		if (diff > 0)
+		{
+			System.out.println("You have more privilege than " + otherName + ", by " + diff + " points.");
+		}
+		else if (diff < 0)
+		{
+			System.out.println("You have less privilege than " + otherName + ", by " + diff * -1 + " points.");
+		}
+		else
+		{
+			System.out.println("You have the same amount of privilege as " + otherName + ".");
+		}
 	}
 }

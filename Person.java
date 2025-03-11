@@ -1,30 +1,63 @@
-public class Person
+public class Person implements Comparable
 {
-	/***** TODO: (Part 2) create helper inner class for Identity*****/
+	//Todo: (Part 2) create helper inner class for Identity
+	protected class Identity {
+		private String pronouns;
+		private String background;
+
+		public Identity() {
+			pronouns = "";
+			background = "";
+		}
+
+		public Identity(String pronouns, String background) {
+			this.pronouns = pronouns;
+			this.background = background;
+		}
+
+		@Override
+		public String toString() {
+			return "My pronouns are " + pronouns + ", and my background is: " + background;
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			if (other == null || !(other instanceof Identity))
+			{
+				return false;
+			}
+
+			Identity id = (Identity) other;
+			return this.pronouns.equals(id.pronouns) && this.background.equals(id.background);
+		}
+	}
 
 	// CONSTANT VARIABLES
 	public static final String DEFAULT_NAME = "Jamie Doe";
-	public static final String DEFAULT_STORY =  "Unknown";
+	public static final String DEFAULT_PRONOUNS = "";
+	public static final String DEFAULT_BACKGROUND = "";
 	public static final int DEFAULT_PRIVILEGE = 100;
 
 	// INSTANCE VARIABLES
-	private String name, story;
+	private String name;
+	private Identity story;
 	private int privilege;
 
 	// CONSTRUCTORS	
-	public Person(String name, String story, int privilege) {
-		this.setAll(name, story, privilege);
+	public Person(String name, String pronouns, String background, int privilege) {
+		this.story = new Identity();
+		this.setAll(name, pronouns, background, privilege);
 	}
 		
 	public Person() {
-		this(DEFAULT_NAME, DEFAULT_STORY, DEFAULT_PRIVILEGE);
+		this(DEFAULT_NAME, DEFAULT_PRONOUNS, DEFAULT_BACKGROUND, DEFAULT_PRIVILEGE);
 	}
 	
 	public Person(Person original) {
 		if(original == null) {
 			throw new IllegalArgumentException("Cannot copy null obect in Person copy constructor");
 		} else {
-			this.setAll(original.name, original.story, original.privilege);
+			this.setAll(original.name, original.getPronouns(), original.getBackground(), original.privilege);
 		}
 	}
 
@@ -33,18 +66,23 @@ public class Person
 		this.name = name;
 	}
 
-	public void setStory(String story) {
-		this.story = story;
+	public void setPronouns(String pronouns) {
+		this.story.pronouns = pronouns;
+	}
+
+	public void setBackground(String background) {
+		this.story.background = background;
 	}
 
 	public void setPrivilege(int privilege) {
 		this.privilege = privilege;
 	}
 
-	public void setAll(String name, String story, int privilege) {
+	public void setAll(String name, String pronouns, String background, int privilege) {
 		this.setPrivilege(privilege);
 		this.setName(name);
-		this.setStory(story);
+		this.setPronouns(pronouns);
+		this.setBackground(background);
 	}
 
 	// ACCESSORS / GETTERS
@@ -52,8 +90,20 @@ public class Person
 		return this.name;
 	}
 		
-	public String getStory() {
-		return this.story;
+	public String getPronouns() {
+		if (story == null)
+		{
+			throw new NullPointerException("This Person's Identity has not been initialised!");
+		}
+		return this.story.pronouns;
+	}
+
+	public String getBackground() {
+		if (story == null)
+		{
+			throw new NullPointerException("This Person's Identity has not been initialised!");
+		}
+		return this.story.background;
 	}
 
 	public int getPrivilege() {
@@ -71,8 +121,8 @@ public class Person
 	@Override
 	public boolean equals(Object other) 
 	{
-		if(other == null || (!(other instanceof Person))) {
-		      return false;
+		if (other == null || (!(other instanceof Person))) {
+			return false;
 		}
 		
 		Person otherPerson = (Person) other;
@@ -81,5 +131,15 @@ public class Person
 	}
 
 	// INTERFACE METHODS
-	/***** TODO: (Part 1) override compareTo method to implement Comparable interface*****/
+	// Todo: (Part 1) override compareTo method to implement Comparable interface
+	@Override
+	public int compareTo(Object o)
+	{
+		if (o == null || (!(o instanceof Person))) {
+			return 0;
+		}
+		
+		Person otherPerson = (Person) o;
+		return this.getPrivilege() - otherPerson.getPrivilege();
+	}
 }

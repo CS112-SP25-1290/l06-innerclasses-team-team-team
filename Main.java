@@ -29,7 +29,7 @@ public class Main
 		RIGHT_WIDTH = MAX/PTS_PER_ANSWER,
 		NAME_WIDTH = 20;
 
-	private static Scanner keyboard = new Scanner(System.in);
+	private static final Scanner keyboard = new Scanner(System.in);
 
 	public static void main(String[] args)
 	{
@@ -116,8 +116,7 @@ public class Main
 		boolean isValid;
 		int choice, privilegeEstimate = Person.DEFAULT_PRIVILEGE;
 
-		System.out.println("Please indicate whether the following statements are true or false.\n"
-				+ "Input 1 or 2 accordingly.");
+		System.out.println("Please indicate whether the following statements are true or false.\nInput 1 or 2 accordingly.");
 
 		for (int i = 0; i < STATEMENTS.length; i++) {
 			isValid = false;
